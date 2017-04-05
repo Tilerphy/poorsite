@@ -17,7 +17,7 @@
     
   <body style="overflow-x:hidden">  
 <div id="container" style="margin-left:0px; height:500px; display:block;background-color:#DDDDDD">
-	<iframe id="sub" style="width:100%" height="500px" src="http://www.tngou.net/tnfs/api/list"></iframe>
+	<iframe id="sub" style="width:100%" height="500px" src=""></iframe>
 </div>
 
     <ul id="messages"></ul>
@@ -27,9 +27,9 @@
 	<div>如果被注入了奇怪的代码，刷新网页就好了。</div>
 	
 	<div>没有封锁任何javascript和html注入，注意玩耍尺度。</div>
-	<div>快速发图片弹幕姿势： img:图片地址 </div>
-	<div>更改站点内容姿势： site:站点地址 </div>
-	<div>切歌： music:歌曲地址 </div>
+	<div>【快速发图片弹幕姿势】： img:图片地址 </div>
+	<div>【更改站点内容姿势】： site:站点地址 </div>
+	<div>【切歌】： music:网易云音乐歌曲id </div>
 	<div>两个图片站点： http://10.1.83.33:8080/emo  and http://10.1.83.33:8080/wxemo</div>
 
     <form action="">
@@ -95,8 +95,9 @@ $(function(){
 
 		socket.on("music", function(src){
 			var musicNow = $("#music").attr("src");
-			if(musicNow != src){
-				$("#music").attr("src", src);
+			var newsrc= '//music.163.com/outchain/player?type=2&id='+src+'&auto=1&height=66'
+			if(musicNow != newsrc){
+				$("#music").attr("src", newsrc);
 			}
 		});
 
