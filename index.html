@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>双击 666</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
+  </head>
+    
+  <body style="overflow-x:hidden">  
+<div id="container" style="margin-left:0px; height:600px; display:block;background-color:#DDDDDD">
+	<iframe id="sub" style="width:100%" height="600px" src="http://www.tngou.net/tnfs/api/list"></iframe>
+</div>
+
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+      
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+
+$(function(){
+
+
+		var all = [];
+		var handler = 0;
+
+		function add(parent, message){
+			var h = parseInt(parent.height() / 40);
+			var r = parseInt($(document.body).width() - parent.width()+ parent.position().left);
+			var id = "_"+Math.random();
+			var content = $("<div id='"+id+"' style='white-space:nowrap;font-family:华文琥珀;font-size:32px; position:absolute; display:inline; color:#333333'>"+message+"</div>");
+			
+			parent.append(content);	
+			r = r - content.width();		
+			all[all.length] = {p:parent, id:id, c:content, i:r, h:parent.position().top + parseInt(Math.random()*40)*h};	
+			return content;
+		}
+
+		function start()
+		{
+			handler  = setInterval(function(){
+				var dels = [];
+				for(var i in all){
+					all[i].c.css({right:all[i].i+'px', top: all[i].h +'px'});
+					if(all[i].i > (all[i].p.width() + 800)){
+						dels[dels.length] = i;
+					}
+					all[i].i +=1 ;
+				}
+
+				for(var i in dels){
+					all[dels[i]].c.remove();
+					all.splice(dels[i], 1);
+				}
+				
+			}, 10);
+		}
+		
+					
+		start();
+
+		var socket = io();
+      		$('form').submit(function(){
+        		socket.emit('talk', $('#m').val());
+        		$('#m').val('');
+			$("#m").focus();
+        		return false;
+     		});
+    
+      		socket.on('talk', function(msg){
+			add($("#container"), msg);	
+      		});
+
+		socket.on("change", function(msg){
+			
+			var now = $("#sub").attr("src");
+			if(now != msg){
+				$("#sub").attr("src", msg);
+			}
+		});
+	});
+     
+    </script>
+  </body>
+</html>
