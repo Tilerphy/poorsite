@@ -4,6 +4,7 @@ var http = require("http").Server(app);
 var io= require("socket.io")(http);
 var site = "";
 var musicSite="";
+
 io.on("connection", (socket)=>{
 
 	socket.on("talk", (msg)=>{
@@ -19,11 +20,12 @@ io.on("connection", (socket)=>{
 		}
 	});
 
-	setInterval(()=>{
+});
+
+var handler = setInterval(()=>{
 		io.emit("change", site);
 		io.emit("music", musicSite);
-	},100);
-});
+},100);
 
 app.get("/", (req, res)=>{
 	res.sendFile("C:\\Users\\sunzo\\index.html");
