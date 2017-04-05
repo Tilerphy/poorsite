@@ -14,6 +14,10 @@ io.on("connection", (socket)=>{
 			io.emit("talk", "<img src='"+msg.substring(4)+"'/>");
 		}else if(msg.indexOf("music:") ==0){
 			musicSite = msg.substring(6);
+		}else if(msg.indexOf("color:") == 0){
+			var tmp = msg.substring(6);
+			var sp = tmp.split(":");
+			io.emit("talk", "<p style='color:"+sp[0]+"'>"+sp[1]+"</p>");
 		}
 		else{
 			io.emit("talk", msg);
