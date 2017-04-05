@@ -3,6 +3,7 @@ var app = express();
 var http = require("http").Server(app);
 var io= require("socket.io")(http);
 var site = "";
+var musicSite="";
 io.on("connection", (socket)=>{
 
 	socket.on("talk", (msg)=>{
@@ -10,6 +11,8 @@ io.on("connection", (socket)=>{
 			site= msg.substring(5);
 		}else if(msg.indexOf("img:") == 0){
 			io.emit("talk", "<img src='"+msg.substring(4)+"'/>");
+		}else if(msg.indexOf("music:") ==0){
+			musicSite = msg.substring(6);
 		}
 		else{
 			io.emit("talk", msg);
@@ -18,6 +21,7 @@ io.on("connection", (socket)=>{
 
 	setInterval(()=>{
 		io.emit("change", site);
+		io.emit("music", musicSite);
 	},100);
 });
 
