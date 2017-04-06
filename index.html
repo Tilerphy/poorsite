@@ -89,7 +89,7 @@ $(function(){
 				$("#container div").hide();
 			}
 			if($('#m').val().indexOf("speed:")==0){
-				speed = $('#m').val().substring(7);
+				speed = $('#m').val().substring(6);
 				return false;
 			}
         		socket.emit('talk', $('#m').val());
