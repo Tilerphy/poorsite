@@ -9,9 +9,11 @@
       form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
       form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
+      	@keyframes move
+	{
+		from {right:0px}
+		to {right:100%}
+	}
     </style>
   </head>
     
@@ -46,37 +48,38 @@ $(function(){
 		function add(parent, message){
 			var h = parseInt(parent.height() / 40);
 			var r = parseInt($(document.body).width() - parent.width()+ parent.position().left);
+			var ftop = parent.position().top + parseInt(Math.random()*40)*h;
 			var id = "_"+Math.random();
-			var content = $("<div id='"+id+"' style='white-space:nowrap;font-family:华文琥珀;font-size:32px; position:absolute; display:inline; color:#333333'>"+message+"</div>");
+			var content = $("<div id='"+id+"' style='top:"+ftop+"px;white-space:nowrap;font-family:华文琥珀;font-size:32px; position:absolute; display:inline; color:#333333'>"+message+"</div>");
 			
 			parent.append(content);	
-			r = r - content.width();		
-			all[all.length] = {p:parent, id:id, c:content, i:r, h:parent.position().top + parseInt(Math.random()*40)*h};	
+			content.on("animationend", function(t){t.remove();});
+			content.css({animation:'move 8s linear'});
+			all[all.length] = {p:parent, id:id, c:content};	
 			return content;
 		}
 
-		function start()
-		{
-			handler  = setInterval(function(){
-				var dels = [];
-				for(var i in all){
-					all[i].c.css({right:all[i].i+'px', top: all[i].h +'px'});
-					if(all[i].i > (all[i].p.width() + 800)){
-						dels[dels.length] = i;
-					}
-					all[i].i +=1 ;
-				}
-
-				for(var i in dels){
-					all[dels[i]].c.remove();
-					all.splice(dels[i], 1);
-				}
-				
-			}, 10);
-		}
+		//function start()
+		//{
+		//	handler  = setInterval(function(){
+		//		var dels = [];
+		//		for(var i in all){
+		//			all[i].c.css({right:all[i].i+'px', top: all[i].h +'px'});
+		//			if(all[i].i > (all[i].p.width() + 800)){
+		//				dels[dels.length] = i;
+		//			}
+		//			all[i].i +=1 ;
+		//		}
+		//		for(var i in dels){
+		//			all[dels[i]].c.remove();
+		//			all.splice(dels[i], 1);
+		//		}
+		//		
+		//	}, 10);
+		//}
 		
 					
-		start();
+		//start();
 
 		var socket = io();
       		$('form').submit(function(){
