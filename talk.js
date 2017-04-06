@@ -33,7 +33,7 @@ var handler = setInterval(()=>{
 },100);
 
 app.get("/", (req, res)=>{
-	res.sendFile("C:\\Users\\sunzo\\index.html");
+	res.sendFile(__dirname+"/index.html");
 });
 
 http.listen(9999);
