@@ -90,6 +90,8 @@ $(function(){
 			}
 			if($('#m').val().indexOf("speed:")==0){
 				speed = $('#m').val().substring(6);
+				$('#m').val('');
+				$("#m").focus();
 				return false;
 			}
         		socket.emit('talk', $('#m').val());
