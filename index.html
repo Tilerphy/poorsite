@@ -44,7 +44,7 @@ $(function(){
 
 		var all = [];
 		var handler = 0;
-
+		var speed = "10";
 		function add(parent, message){
 			var h = parseInt(parent.height() / 40);
 			var r = parseInt($(document.body).width() - parent.width()+ parent.position().left);
@@ -56,7 +56,7 @@ $(function(){
 			content.on("animationend", function(t){
 				$(t.currentTarget).remove();
 			});
-			content.css({animation:'move 10s linear'});
+			content.css({animation:'move '+ speed +' linear'});
 			all[all.length] = {p:parent, id:id, c:content};	
 			return content;
 		}
@@ -87,6 +87,10 @@ $(function(){
       		$('form').submit(function(){
 			if($('#m').val() == "clear:"){
 				$("#container div").hide();
+			}
+			if($('#m').val().indexOf("speed:")==0){
+				speed = $('#m').val().substring(7);
+				return false;
 			}
         		socket.emit('talk', $('#m').val());
         		$('#m').val('');
