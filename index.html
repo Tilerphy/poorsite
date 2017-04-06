@@ -80,6 +80,9 @@ $(function(){
 
 		var socket = io();
       		$('form').submit(function(){
+			if($('#m').val() == "clear:"){
+				$("#container div").hide();
+			}
         		socket.emit('talk', $('#m').val());
         		$('#m').val('');
 			$("#m").focus();
