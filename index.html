@@ -53,7 +53,9 @@ $(function(){
 			var content = $("<div id='"+id+"' style='top:"+ftop+"px;white-space:nowrap;font-family:华文琥珀;font-size:32px; position:absolute; display:inline; color:#333333'>"+message+"</div>");
 			
 			parent.append(content);	
-			content.on("animationend", function(t){t.remove();});
+			content.on("animationend", function(t){
+				$(t.currentTarget).remove();
+			});
 			content.css({animation:'move 8s linear'});
 			all[all.length] = {p:parent, id:id, c:content};	
 			return content;
